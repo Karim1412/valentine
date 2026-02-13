@@ -95,10 +95,12 @@
             gap: 20px;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             margin-top: 30px;
             position: relative;
-            height: 150px;
+            min-height: 150px;
             width: 100%;
+            padding: 20px;
         }
 
         button {
@@ -128,6 +130,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
+            position: relative;
         }
 
         #yes-btn.show {
@@ -298,6 +301,11 @@
         
         let noClickCount = 0;
         let yesTimeout;
+        
+        // Set initial position for No button
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = '50px';
+        noBtn.style.top = '20px';
 
         noBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -310,12 +318,12 @@
             const btnHeight = noBtn.offsetHeight;
             
             // Calculate maximum safe positions (keep button fully inside container)
-            const maxX = containerRect.width - btnWidth;
-            const maxY = containerRect.height - btnHeight;
+            const maxX = containerRect.width - btnWidth - 40;
+            const maxY = containerRect.height - btnHeight - 40;
             
             // Generate random position ensuring button stays inside
-            const randomX = Math.max(0, Math.min(Math.random() * maxX, maxX));
-            const randomY = Math.max(0, Math.min(Math.random() * maxY, maxY));
+            const randomX = Math.max(20, Math.random() * maxX);
+            const randomY = Math.max(20, Math.random() * maxY);
             
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
