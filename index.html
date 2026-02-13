@@ -97,7 +97,7 @@
             align-items: center;
             margin-top: 30px;
             position: relative;
-            height: 120px;
+            height: 150px;
             width: 100%;
         }
 
@@ -303,25 +303,19 @@
             e.preventDefault();
             noClickCount++;
             
-            // Get the question page bounds to keep button inside
-            const container = questionPage.getBoundingClientRect();
+            // Get the buttons container bounds
+            const container = document.querySelector('.buttons-container');
+            const containerRect = container.getBoundingClientRect();
             const btnWidth = noBtn.offsetWidth;
             const btnHeight = noBtn.offsetHeight;
             
-            // Calculate safe area within the question box
-            const padding = 20; // Padding from edges
-            const maxX = container.width - btnWidth - padding * 2;
-            const maxY = container.height - btnHeight - padding * 2;
+            // Calculate maximum safe positions (keep button fully inside container)
+            const maxX = containerRect.width - btnWidth;
+            const maxY = containerRect.height - btnHeight;
             
-            // Ensure minimum movement distance
-            let randomX, randomY;
-            do {
-                randomX = Math.random() * maxX + padding;
-                randomY = Math.random() * maxY + padding;
-            } while (
-                Math.abs(randomX - (noBtn.offsetLeft || 0)) < 50 &&
-                Math.abs(randomY - (noBtn.offsetTop || 0)) < 50
-            );
+            // Generate random position ensuring button stays inside
+            const randomX = Math.max(0, Math.min(Math.random() * maxX, maxX));
+            const randomY = Math.max(0, Math.min(Math.random() * maxY, maxY));
             
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
@@ -329,10 +323,10 @@
             // Clear any existing timeout
             clearTimeout(yesTimeout);
             
-            // Show Yes button after 15 seconds
+            // Show Yes button after 10 seconds
             yesTimeout = setTimeout(() => {
                 yesBtn.classList.add('show');
-            }, 15000);
+            }, 10000);
         });
 
         yesBtn.addEventListener('click', function() {
